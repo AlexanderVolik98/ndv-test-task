@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+    app:
+        container_name: php-fpm
+        tty: true
+        build:
+            context: .
+            dockerfile: ./docker/php-fpm/Dockerfile
+        image: php
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www
+            - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - app-network
+    webserver:
+        container_name: nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+    db:
+        image: mariadb
+        restart: always
+        environment:
+            MARIADB_USER: maria
+            MARIADB_ROOT_PASSWORD: password
+            MARIADB_DATABASE: dbapi
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+    composer:
+        image: composer
+        volumes:
+            - ./:/var/www
+        working_dir: /var/www
+networks:
+    app-network:
+        driver: bridge

@@ -1,0 +1,18 @@
+<div>
+  <h2>Employee Management</h2>
+  <form (ngSubmit)="editingEmployee ? updateEmployee() : addEmployee()">
+    <input [(ngModel)]="name" name="name" placeholder="Name" required />
+    <input [(ngModel)]="position" name="position" placeholder="Position" required />
+    <input [(ngModel)]="salary" name="salary" placeholder="Salary" required />
+    <button type="submit">{{ editingEmployee ? 'Update' : 'Add' }} Employee</button>
+  </form>
+
+  <ul>
+    <li *ngFor="let employee of employees">
+      {{ employee.name }} - {{ employee.position }}
+      <button (click)="editEmployee(employee)">Edit</button>
+      <button (click)="deleteEmployee(employee.id)">Delete</button>
+    </li>
+  </ul>
+</div>
+

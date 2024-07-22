@@ -1,0 +1,9 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    paths:
+        'public/svg': 'svg'
+        'employee-management/src': 'employee-management-ng'
+
+when@test:
+    twig:
+        strict_variables: true
